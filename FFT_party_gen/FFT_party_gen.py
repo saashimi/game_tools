@@ -6,10 +6,14 @@ import random
 job_classes = ['Squire', 'Chemist', 'Black Mage', 'Time Mage', 'Summoner', 'White Mage',
     'Mystic', 'Orator', 'Arithmetician', 'Bard', 'Archer', 'Thief', 'Dragoon', 
     'Knight', 'Monk', 'Geomancer', 'Samurai', 'Ninja', 'Dancer', 'Dark Knight', 
-    'Mime', 'Onion Knight', 'Holy Knight', 'Machinist', 'Skyseer', 'Netherseer',
+    'Mime', 'Onion Knight']
+
+rare_job_classes = ['Holy Knight', 'Machinist', 'Skyseer', 'Netherseer',
     'Divine Knight', 'Sword Saint', 'Knight Templar', 'Dragonkin', 'SOLDIER', 
-    'Sky Pirate', 'Game Hunter'
-]
+    'Sky Pirate', 'Game Hunter']
+
+party = []
+
 
 def print_helper(member_in):
     """
@@ -21,11 +25,7 @@ def print_helper(member_in):
     else:
         print('{0}, a {1}.'.format(member_in[0], member_in[1]))
 
-
-def main():
-   
-    party = []
-
+def main(): 
     for member in range(10):
         # Names should be unique
         random.shuffle(male_names)
@@ -33,13 +33,17 @@ def main():
         random.shuffle(monster_names)
         random.shuffle(monster_types)
         random.shuffle(job_classes)
-
-        randomizer = random.randint(0, 2)
-        if randomizer == 0:
-            character = (male_names[0], 'male', job_classes[0])
+        random.shuffle(rare_job_classes)
+        randomizer = random.randint(1, 10)
         if randomizer == 1:
-            character = (female_names[0], 'female', job_classes[0])
+            character = (male_names[0], 'male', rare_job_classes[0])
         if randomizer == 2:
+            character = (female_names[0], 'female', rare_job_classes[0])
+        if randomizer in range(3, 9, 2):
+            character = (male_names[0], 'male', job_classes[0])
+        if randomizer in range(4, 9, 2):
+            character = (female_names[0], 'female', job_classes[0])
+        if randomizer == 9 or randomizer == 10:
             character = (monster_names[0], monster_types[0])
         party.append(character)
 
