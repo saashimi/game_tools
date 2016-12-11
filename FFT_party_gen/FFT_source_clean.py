@@ -1,3 +1,7 @@
+"""
+FFT_source_clean.py - A helper script to clean a list of FFT names text_file
+"""
+
 files = ['female', 'male', 'monster']
 
 for file in files:
