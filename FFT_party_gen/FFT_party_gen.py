@@ -35,7 +35,7 @@ def main():
         random.shuffle(job_classes)
         random.shuffle(rare_job_classes)
         randomizer = random.randint(1, 10)
-        if randomizer == 1:
+        if randomizer == 1: 
             character = (male_names[0], 'male', rare_job_classes[0])
         if randomizer == 2:
             character = (female_names[0], 'female', rare_job_classes[0])
