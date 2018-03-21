@@ -1,9 +1,10 @@
+"""A script to parse known callsigns by aircraft type"""
 import os
+import pprint
 
 
 def main():
     ac_dict = {}
-    ac_type = []
 
     file = os.path.join(os.path.dirname(__file__), 'callsign_data.txt')
     with open(file, encoding='utf8') as src:
@@ -18,18 +19,19 @@ def main():
                             ac_dict[temp_list[1]] = [temp_list[0]]
                     except KeyError:
                         continue
+                """
                 elif '-' in temp_list[2]:
-                    ac_type.append(temp_list[2])
+                    part1, part2 = temp_list[0], temp_list[1]
+                    ac_dict[temp_list[2]] = ''.join(part1 + part2)
+                """
             except IndexError:
                 continue
-            # Parse AC Type
-            # if ac in line:
-                # dest.write("\'{0}\',\n".format(line.rstrip('\n')))
+
+    for ac in ac_dict:
+        ac_dict[ac] = set(ac_dict[ac])
 
     src.close()
-    # dest.close()
-    ac_type = set(ac_type)
-    print(ac_dict)
+    pprint.pprint(ac_dict)
 
 
 if __name__ == '__main__':
