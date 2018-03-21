@@ -1,4 +1,6 @@
-# wargame_tools
-Scripts and programs to help with wargaming scenarios. Mostly intended for use
-with the Command: Modern Air/Naval Operations game, but can include other items
-of personal interest. 
+# game_tools
+Scripts and programs to help with general game scenarios. Mostly intended for 
+use with Command: Modern Air/Naval Operations simulator, but now includes other
+items of personal interest.
+
+Serves a general programming sandbox. 
