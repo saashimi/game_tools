@@ -1,7 +1,0 @@
-'APACHE AH-64 Generic: US Army helo',
-'APACHE AH-64 1-3 AVN Hunter AAF Savannah GA',
-'BLUE MAX 2 AH-64D, 3-3 AVN Hunter AAF Savannah GA',
-'LONGBOW AH-64D 1-3 Avn Hunter AAF Savannah GA',
-'MARAUDER AH-64, 1-151 AVN Ft Bragg NC',
-'OUTCAST AH-64 PA ArNG Tactical Call',
-'OUTCAST AH-64D Apache, 1-3 AVN, ATKHB Hunter AAF Savanah GA',
