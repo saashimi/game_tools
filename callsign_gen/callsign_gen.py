@@ -5,7 +5,7 @@ import pprint
 import re
 
 
-def strip_model(ac_in):
+def strip_model(ac_in, line_in):
     """
     Strip model designations from aircraft types
     e.g. ac_in = F-15A
@@ -19,8 +19,15 @@ def strip_model(ac_in):
         generic_ac = leader.group(0) + trailer.group(1)
         return generic_ac
     except AttributeError:
-        print(ac_in, "Not a valid aircraft type!")
-        return
+        # This catches ac_types that are already in "F-15" format
+        try:
+            regex = '(?<=-)(\d+)'
+            trailer = re.search(regex, ac_in)
+            generic_ac = leader.group(0) + trailer.group(1)
+            return generic_ac
+        except AttributeError:
+            print(line_in, ac_in, "Not a valid aircraft type!")
+            return
 
 
 def callsign_one_word(dict_in, lst_in):
@@ -55,20 +62,21 @@ def callsign_two_words(dict_in, lst_in):
 
 def main():
     ac_dict = {}
-
+    line_no = 0
     file = os.path.join(os.path.dirname(__file__), 'callsign_data.txt')
     with open(file, encoding='utf8') as src:
         for line in src:
+            line_no += 1
             temp_list = line.split()
             try:
                 if '-' in temp_list[1]:
                     temp_list[1] = temp_list[1].replace(',', '')
-                    temp_list[1] = strip_model(temp_list[1])
+                    temp_list[1] = strip_model(temp_list[1], line_no)
                     callsign_one_word(ac_dict, temp_list)
 
                 elif '-' in temp_list[2]:
                     temp_list[2] = temp_list[2].replace(',', '')
-                    temp_list[2] = strip_model(temp_list[2])
+                    temp_list[2] = strip_model(temp_list[2], line_no)
                     callsign_two_words(ac_dict, temp_list)
             except IndexError:
                 print("Skip line due to index error")
