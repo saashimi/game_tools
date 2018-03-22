@@ -2,6 +2,25 @@
 
 import os
 import pprint
+import re
+
+
+def strip_model(ac_in):
+    """
+    Strip model designations from aircraft types
+    e.g. ac_in = F-15A
+    output = F-15
+    """
+    letter_desig = '^.*?-'
+    regex = '(?<=-)(\d+)(\D+)'
+    leader = re.search(letter_desig, ac_in)
+    trailer = re.search(regex, ac_in)
+    try:
+        generic_ac = leader.group(0) + trailer.group(1)
+        return generic_ac
+    except AttributeError:
+        print(ac_in, "Not a valid aircraft type!")
+        return
 
 
 def callsign_one_word(dict_in, lst_in):
@@ -44,13 +63,15 @@ def main():
             try:
                 if '-' in temp_list[1]:
                     temp_list[1] = temp_list[1].replace(',', '')
+                    temp_list[1] = strip_model(temp_list[1])
                     callsign_one_word(ac_dict, temp_list)
 
                 elif '-' in temp_list[2]:
                     temp_list[2] = temp_list[2].replace(',', '')
+                    temp_list[2] = strip_model(temp_list[2])
                     callsign_two_words(ac_dict, temp_list)
             except IndexError:
-                print("There was an index error")
+                print("Skip line due to index error")
                 continue
 
     for ac in ac_dict:
