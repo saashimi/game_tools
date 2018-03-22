@@ -1,6 +1,31 @@
 """A script to parse known callsigns by aircraft type"""
+
 import os
 import pprint
+
+
+def callsign_one_word(dict_in, lst_in):
+    try:
+        if lst_in[1] in dict_in:
+            dict_in[lst_in[1]].append(lst_in[0])
+        else:
+            dict_in[lst_in[1]] = [lst_in[0]]
+    except KeyError:
+        return dict_in, lst_in
+
+    return dict_in, lst_in
+
+
+def callsign_two_words(dict_in, lst_in):
+    try:
+        if lst_in[2] in dict_in:
+            dict_in[lst_in[2]].append(lst_in[0])
+        else:
+            dict_in[lst_in[2]] = [''.join(lst_in[0] + ' ' + lst_in[1])]
+    except KeyError:
+        return dict_in, lst_in
+
+    return dict_in, lst_in
 
 
 def main():
@@ -12,18 +37,10 @@ def main():
             temp_list = line.split()
             try:
                 if '-' in temp_list[1]:
-                    try:
-                        if temp_list[1] in ac_dict:
-                            ac_dict[temp_list[1]].append(temp_list[0])
-                        else:
-                            ac_dict[temp_list[1]] = [temp_list[0]]
-                    except KeyError:
-                        continue
-                """
+                    callsign_one_word(ac_dict, temp_list)
+
                 elif '-' in temp_list[2]:
-                    part1, part2 = temp_list[0], temp_list[1]
-                    ac_dict[temp_list[2]] = ''.join(part1 + part2)
-                """
+                    callsign_two_words(ac_dict, temp_list)
             except IndexError:
                 continue
 
