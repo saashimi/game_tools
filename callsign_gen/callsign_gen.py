@@ -1,9 +1,15 @@
 """A script to parse known callsigns by aircraft type"""
 
 import os
-import pprint
 import re
 import json
+
+
+def hornet_parser(ac_in, line_in):
+    """
+    Handles all the wonderful naming variations the F/A-18 hornet
+    """
+    pass
 
 
 def strip_model(ac_in, line_in):
@@ -13,14 +19,15 @@ def strip_model(ac_in, line_in):
     output = F-15
     """
     letter_desig = '^.*?-'
-    regex = '(?<=-)(\d+)(\D+)'
+    regex = '(?<=-)(\d+)(\D+)' 
     leader = re.search(letter_desig, ac_in)
     trailer = re.search(regex, ac_in)
     try:
         generic_ac = leader.group(0) + trailer.group(1)
         return generic_ac
     except AttributeError:
-        # This catches ac_types that are already in "F-15" format
+        # This catches ac_types that are already without a model designation
+        # e.g., `F-15` vs `F-15A`
         try:
             regex = '(?<=-)(\d+)'
             trailer = re.search(regex, ac_in)
@@ -65,6 +72,7 @@ def main():
     ac_dict = {}
     line_no = 0
     file = os.path.join(os.path.dirname(__file__), 'callsign_data.txt')
+    writefile = os.path.join(os.path.dirname(__file__), 'ac_callsigns.json')
     with open(file, encoding='utf8') as src:
         for line in src:
             line_no += 1
@@ -87,11 +95,10 @@ def main():
         ac_dict[ac] = set(ac_dict[ac])
         ac_dict[ac] = [set_item for set_item in ac_dict[ac]]
 
-    with open('ac_callsigns.json', 'w') as writefile:
-        json.dump(ac_dict, writefile)
+    with open(writefile, 'w') as writeout:
+        json.dump(ac_dict, writeout)
 
     src.close()
-    # pprint.pprint(ac_dict)
 
 
 if __name__ == '__main__':
