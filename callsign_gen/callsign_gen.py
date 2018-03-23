@@ -97,7 +97,7 @@ def main():
                 continue
 
     for ac in ac_dict:
-        ac_dict[ac] = set(ac_dict[ac])
+        ac_dict[ac] = set(ac_dict[ac])  # Remove duplicate entries
         ac_dict[ac] = [set_item for set_item in ac_dict[ac]]
 
     with open(writefile, 'w') as writeout:
