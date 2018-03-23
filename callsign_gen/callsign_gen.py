@@ -3,6 +3,7 @@
 import os
 import pprint
 import re
+import json
 
 
 def strip_model(ac_in, line_in):
@@ -84,9 +85,13 @@ def main():
 
     for ac in ac_dict:
         ac_dict[ac] = set(ac_dict[ac])
+        ac_dict[ac] = [set_item for set_item in ac_dict[ac]]
+
+    with open('ac_callsigns.json', 'w') as writefile:
+        json.dump(ac_dict, writefile)
 
     src.close()
-    pprint.pprint(ac_dict)
+    # pprint.pprint(ac_dict)
 
 
 if __name__ == '__main__':
