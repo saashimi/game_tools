@@ -5,11 +5,12 @@ import re
 import json
 
 
-def hornet_parser(ac_in, line_in):
+def hornet_parser(ac_in):
     """
     Handles all the wonderful naming variations the F/A-18 hornet
     """
-    pass
+    ac_in = 'F/A-18'
+    return ac_in
 
 
 def strip_model(ac_in, line_in):
@@ -19,7 +20,7 @@ def strip_model(ac_in, line_in):
     output = F-15
     """
     letter_desig = '^.*?-'
-    regex = '(?<=-)(\d+)(\D+)' 
+    regex = '(?<=-)(\d+)(\D+)'
     leader = re.search(letter_desig, ac_in)
     trailer = re.search(regex, ac_in)
     try:
@@ -76,14 +77,18 @@ def main():
     with open(file, encoding='utf8') as src:
         for line in src:
             line_no += 1
-            temp_list = line.split()
+            temp_list = line.split()          
             try:
                 if '-' in temp_list[1]:
+                    if 'F' in temp_list[1] and '18' in temp_list[1]:
+                        temp_list[1] = hornet_parser(temp_list[1])
                     temp_list[1] = temp_list[1].replace(',', '')
                     temp_list[1] = strip_model(temp_list[1], line_no)
                     callsign_one_word(ac_dict, temp_list)
 
                 elif '-' in temp_list[2]:
+                    if 'F' in temp_list[2] and '18' in temp_list[2]:
+                        temp_list[2] = hornet_parser(temp_list[2])
                     temp_list[2] = temp_list[2].replace(',', '')
                     temp_list[2] = strip_model(temp_list[2], line_no)
                     callsign_two_words(ac_dict, temp_list)
