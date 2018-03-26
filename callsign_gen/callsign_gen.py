@@ -41,13 +41,17 @@ def strip_model(ac_in, line_in):
 
 def callsign_handler(dict_in, lst_in, index, line_no_in):
     """
-    Adds one-word callsigns to aircraft dictionary
+    Adds one- and two-word callsigns to aircraft dictionary.  Handles various
+    inputs for the F/A-18.
+    The F-15E Strike Eagle maintains its unique model designation due to its
+    strike fighter role, distinct from F-15As through Ds.
     Args:
         dict_in: an aircraft dictionary
         lst_in: a temporary list of strings from the aircraft callsign input
                 file
         index: The index position of the aircraft type designation
-        line_no_in: The current line number in the raw callsign input file
+        line_no_in: The current line number in the raw callsign input file.
+        Used for error handling.
     returns: None
     """
     retain_model_type = False
@@ -82,7 +86,7 @@ def main():
     with open(file, encoding='utf8') as src:
         for line in src:
             line_no += 1
-            temp_list = line.split()         
+            temp_list = line.split()
             try:
                 if '-' in temp_list[2]:
                     type_index = 2
