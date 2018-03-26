@@ -39,34 +39,29 @@ def strip_model(ac_in, line_in):
             return
 
 
-def callsign_one_word(dict_in, lst_in):
+def callsign_handler(dict_in, lst_in, index, line_no_in):
     """
     Adds one-word callsigns to aircraft dictionary
     Args:
         dict_in: an aircraft dictionary
         lst_in: a temporary list of strings from the aircraft callsign input
                 file
+        index: The index position of the aircraft type designation
+        line_no_in: The current line number in the raw callsign input file
     returns: None
     """
-    if lst_in[1] in dict_in:
-        dict_in[lst_in[1]].append(lst_in[0])
-    else:
-        dict_in[lst_in[1]] = [lst_in[0]]
-
-
-def callsign_two_words(dict_in, lst_in):
-    """
-    Adds two-word callsigns to aircraft dictionary
-    Args:
-        dict_in: an aircraft dictionary
-        lst_in: a temporary list of strings from the aircraft callsign input
-                file
-    returns: None
-    """
-    if lst_in[2] in dict_in:
-        dict_in[lst_in[2]].append(lst_in[0])
-    else:
-        dict_in[lst_in[2]] = [''.join(lst_in[0] + ' ' + lst_in[1])]
+    lst_in[index] = lst_in[index].replace(',', '')
+    lst_in[index] = strip_model(lst_in[index], line_no_in)
+    if index == 1:
+        if lst_in[1] in dict_in:
+            dict_in[lst_in[1]].append(lst_in[0])
+        else:
+            dict_in[lst_in[1]] = [lst_in[0]]
+    if index == 2:
+        if lst_in[2] in dict_in:
+            dict_in[lst_in[2]].append(lst_in[0])
+        else:
+            dict_in[lst_in[2]] = [''.join(lst_in[0] + ' ' + lst_in[1])]
 
 
 def main():
@@ -77,21 +72,19 @@ def main():
     with open(file, encoding='utf8') as src:
         for line in src:
             line_no += 1
-            temp_list = line.split()          
+            temp_list = line.split()         
             try:
-                if '-' in temp_list[1]:
-                    if 'F' in temp_list[1] and '18' in temp_list[1]:
-                        temp_list[1] = hornet_parser(temp_list[1])
-                    temp_list[1] = temp_list[1].replace(',', '')
-                    temp_list[1] = strip_model(temp_list[1], line_no)
-                    callsign_one_word(ac_dict, temp_list)
-
-                elif '-' in temp_list[2]:
+                if '-' in temp_list[2]:
+                    type_index = 2
+                    callsign_handler(ac_dict, temp_list, type_index, line_no)
+                    """
                     if 'F' in temp_list[2] and '18' in temp_list[2]:
-                        temp_list[2] = hornet_parser(temp_list[2])
-                    temp_list[2] = temp_list[2].replace(',', '')
-                    temp_list[2] = strip_model(temp_list[2], line_no)
-                    callsign_two_words(ac_dict, temp_list)
+                    """
+
+                elif '-' in temp_list[1]:
+                    type_index = 1
+                    callsign_handler(ac_dict, temp_list, type_index, line_no)
+
             except IndexError:
                 print("Skip line due to index error")
                 continue
