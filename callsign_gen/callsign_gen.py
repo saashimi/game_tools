@@ -50,8 +50,18 @@ def callsign_handler(dict_in, lst_in, index, line_no_in):
         line_no_in: The current line number in the raw callsign input file
     returns: None
     """
+    retain_model_type = False
+    if 'F' in lst_in[index] and '18' in lst_in[index]:
+        # Handle all F/A-18 designation variations
+        lst_in[index] = hornet_parser(lst_in[index])
+
+    if 'F-15E' in lst_in[index]:
+        retain_model_type = True
+
     lst_in[index] = lst_in[index].replace(',', '')
-    lst_in[index] = strip_model(lst_in[index], line_no_in)
+    if retain_model_type is False:
+        lst_in[index] = strip_model(lst_in[index], line_no_in)
+
     if index == 1:
         if lst_in[1] in dict_in:
             dict_in[lst_in[1]].append(lst_in[0])
@@ -77,9 +87,6 @@ def main():
                 if '-' in temp_list[2]:
                     type_index = 2
                     callsign_handler(ac_dict, temp_list, type_index, line_no)
-                    """
-                    if 'F' in temp_list[2] and '18' in temp_list[2]:
-                    """
 
                 elif '-' in temp_list[1]:
                     type_index = 1
