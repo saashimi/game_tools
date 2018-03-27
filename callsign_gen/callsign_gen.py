@@ -7,7 +7,8 @@ import json
 
 def hornet_parser(ac_in):
     """
-    Handles all the wonderful naming variations the F/A-18 hornet
+    Standardizes all the wonderful naming variations of the F/A-18 hornet.
+    E.g. F-18, FA-18, F/A-18
     """
     ac_in = 'F/A-18'
     return ac_in
